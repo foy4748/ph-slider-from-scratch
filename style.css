@@ -1,0 +1,40 @@
+#root {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+}
+
+.col {
+	grid-column: 1 / -1;
+}
+
+.nav-next,
+.nav-prev {
+	left: 0;
+	font-weight: 700;
+	top: -3px;
+	position: absolute;
+	z-index: 2;
+	color: green;
+	background-color: white;
+	padding: 25px;
+	border-radius: 55%;
+}
+
+.nav-prev {
+	left: unset;
+	right: 0;
+}
+
+.animation {
+	animation: imageLoaded 0.5s linear 0s alternate;
+}
+
+@keyframes imageLoaded {
+	0% {
+		opacity: 0.5;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
