@@ -26,9 +26,11 @@ const slideChanger = (direction, images) => () => {
 	switch (direction) {
 		case "left":
 			currentImg = (currentImg + 1) % size;
+			imgElm.classList.add("animation-from-right")
 			break;
 		case "right":
 			currentImg = (currentImg - 1 + size) % size;
+			imgElm.classList.add("animation-from-left")
 			break;
 		default:
 			break;

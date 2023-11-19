@@ -1,6 +1,7 @@
 #root {
 	display: grid;
 	grid-template-columns: repeat(12, 1fr);
+	overflow-x: hidden;
 }
 
 .col {
@@ -25,16 +26,39 @@
 	right: 0;
 }
 
-.animation {
-	animation: imageLoaded 0.5s linear 0s alternate;
+/* Animation Section */
+
+.animation-from-left {
+	animation: imageLoaded-from-left 0.7s linear 0s alternate;
 }
 
-@keyframes imageLoaded {
+.animation-from-right {
+	animation: imageLoaded-from-right 0.7s linear 0s alternate;
+}
+
+
+@keyframes imageLoaded-from-left {
 	0% {
 		opacity: 0.5;
+		transform: translateX(-50px);
 	}
 
 	100% {
+		transform: translateX(0);
 		opacity: 1;
 	}
 }
+
+@keyframes imageLoaded-from-right {
+	0% {
+		opacity: 0.5;
+		transform: translateX(50px);
+	}
+
+	100% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+/* ======== End of Animation Section ========= */
