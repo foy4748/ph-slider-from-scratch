@@ -7,60 +7,46 @@ const images = [
 ]
 
 // State Management
-let currentImg = 0;
+let currentImg = -1;
 
 let rootDiv = document.getElementById("root");
 
-//images.forEach(img => {
-//	const imgElm = document.createElement("img");
-//	imgElm.src = img;
-//	// Styling the images a bit
-//	//imgElm.height = "600"
-//	imgElm.style['objectFit'] = "cover"
-//	imgElm.style['width'] = "100%"
-//	imgElm.classList.add("col")
-//	imgElm.classList.add("animation")
-//	rootDiv.append(imgElm)
-//})
 
 const slideChanger = (direction, images) => () => {
-	console.log("currentImg", currentImg)
 	const size = images.length
-	let currentIdx = Math.abs(currentImg) % size;
 	// First making sure the root Div is empty
 	rootDiv.innerHTML = ""
 	const imgElm = document.createElement("img");
-	imgElm.src = images[currentIdx];
 
 	// Styling a Bit
 	imgElm.style['objectFit'] = "cover"
 	imgElm.style['width'] = "100%"
 	imgElm.classList.add("col")
 	imgElm.classList.add("animation")
-	rootDiv.append(imgElm)
 	switch (direction) {
 		case "left":
-			currentIdx = Math.abs(currentIdx) + 1;
+			currentImg = (currentImg + 1) % size;
 			break;
 		case "right":
-			if (currentIdx == 0) {
-				currentIdx = size - 2;
-			} else {
-				currentIdx = Math.abs(currentIdx) - 1;
-			}
+			currentImg = (currentImg - 1 + size) % size;
+			break;
+		default:
+			break;
 	}
+	console.log('currentImg', currentImg)
+	imgElm.src = images[currentImg];
+	rootDiv.append(imgElm)
 	// Updating  State
 	// currentImg;
-	currentImg = currentIdx;
 }
 
 window.onload = () => {
-	const imgElm = document.createElement("img");
-	imgElm.src = images[currentImg];
-	currentImg++;
-	rootDiv.append(imgElm)
-
+	document.getElementsByClassName("nav-prev")[0].click();
+	console.log('currentImg', currentImg)
 }
 
 document.getElementsByClassName("nav-next")[0].addEventListener("click", slideChanger("right", images));
 document.getElementsByClassName("nav-prev")[0].addEventListener("click", slideChanger("left", images));
+
+// Thanks to this blog
+// https://dev.to/ranewallin/this-simple-math-hack-lets-you-create-an-image-carousel-without-any-if-statements-5chj
