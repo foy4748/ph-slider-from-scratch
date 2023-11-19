@@ -9,20 +9,30 @@ const images = [
 // State Management
 let currentImg = -1;
 
+// Grabbing Elements
 let rootDiv = document.getElementById("root");
+let nextBtn = document.getElementsByClassName("navigate-next")[0];
+let prevBtn = document.getElementsByClassName("navigate-prev")[0];
 
+// Event Handler Functions
 
 const slideChanger = (direction, images) => () => {
 	const size = images.length
+
 	// First making sure the root Div is empty
 	rootDiv.innerHTML = ""
+
+	// Creating Img Element
 	const imgElm = document.createElement("img");
 
 	// Styling a Bit
-	imgElm.style['objectFit'] = "cover"
 	imgElm.style['width'] = "100%"
+	imgElm.style['height'] = "500px"
+	imgElm.style['objectFit'] = "cover"
 	imgElm.classList.add("col")
-	imgElm.classList.add("animation")
+
+	// Updating  State
+	// currentImg;
 	switch (direction) {
 		case "left":
 			currentImg = (currentImg + 1) % size;
@@ -35,20 +45,21 @@ const slideChanger = (direction, images) => () => {
 		default:
 			break;
 	}
-	console.log('currentImg', currentImg)
+
+	// Populating DOM / Rendering
 	imgElm.src = images[currentImg];
 	rootDiv.append(imgElm)
-	// Updating  State
-	// currentImg;
 }
 
+// Event Listeners =============================================
+
 window.onload = () => {
-	document.getElementsByClassName("nav-prev")[0].click();
+	prevBtn.click();
 	console.log('currentImg', currentImg)
 }
 
-document.getElementsByClassName("nav-next")[0].addEventListener("click", slideChanger("right", images));
-document.getElementsByClassName("nav-prev")[0].addEventListener("click", slideChanger("left", images));
+nextBtn.addEventListener("click", slideChanger("right", images));
+prevBtn.addEventListener("click", slideChanger("left", images));
 
 // Thanks to this blog
 // https://dev.to/ranewallin/this-simple-math-hack-lets-you-create-an-image-carousel-without-any-if-statements-5chj

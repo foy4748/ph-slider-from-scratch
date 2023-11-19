@@ -8,8 +8,8 @@
 	grid-column: 1 / -1;
 }
 
-.nav-next,
-.nav-prev {
+.navigate-next,
+.navigate-prev {
 	left: 0;
 	font-weight: 700;
 	top: -3px;
@@ -21,7 +21,7 @@
 	border-radius: 55%;
 }
 
-.nav-prev {
+.navigate-prev {
 	left: unset;
 	right: 0;
 }
