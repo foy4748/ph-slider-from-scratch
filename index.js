@@ -25,6 +25,15 @@ let paginationDiv = document.getElementsByClassName("pagination")[0];
 
 // Changing Slides
 const slideChanger = (direction, images) => () => {
+  // Removing previous active bullet point ===============
+  // Grabbing Displaying bullet points
+  const bulletPoints = document.getElementsByClassName("pagination-bullet");
+
+  // Removing existing bulletPoints
+  currentImg >= 0 &&
+    bulletPoints[currentImg].classList.remove("pagination-bullet--active");
+  //=============================
+
   const size = images.length;
 
   // First making sure the root Div is empty
@@ -57,6 +66,10 @@ const slideChanger = (direction, images) => () => {
   // Populating DOM / Rendering
   imgElm.src = images[currentImg];
   rootDiv.append(imgElm);
+
+  // Marking active bullet point
+  currentImg >= 0 &&
+    bulletPoints[currentImg]?.classList.add("pagination-bullet--active");
 };
 
 // Pagination Bullet Part ==============================
@@ -64,9 +77,14 @@ const slideChanger = (direction, images) => () => {
 // Changing image
 // according to bullet point
 function bulletPointListener(imgNumber) {
-  // Displaying bullet points
+  // Removing previous active bullet point ===============
+  // Grabbing Displaying bullet points
   const bulletPoints = document.getElementsByClassName("pagination-bullet");
+
+  // Removing existing bulletPoints
   bulletPoints[currentImg].classList.remove("pagination-bullet--active");
+  //=============================
+
   // Updating state
   currentImg = imgNumber;
 
