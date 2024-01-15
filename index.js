@@ -63,7 +63,10 @@ const slideChanger = (direction, images) => () => {
 
 // Changing image
 // according to bullet point
-const bulletPointListener = (imgNumber) => {
+function bulletPointListener(imgNumber) {
+  // Displaying bullet points
+  const bulletPoints = document.getElementsByClassName("pagination-bullet");
+  bulletPoints[currentImg].classList.remove("pagination-bullet--active");
   // Updating state
   currentImg = imgNumber;
 
@@ -84,7 +87,10 @@ const bulletPointListener = (imgNumber) => {
   // Populating DOM / Rendering
   imgElm.src = images[currentImg];
   rootDiv.append(imgElm);
-};
+
+  // Marking active bullet point
+  bulletPoints[currentImg].classList.add("pagination-bullet--active");
+}
 
 const generatePaginationBullet = () => {
   paginationDiv.innerHTML = "";
@@ -99,6 +105,8 @@ window.onload = () => {
   prevBtn.click();
   console.log("currentImg", currentImg);
   generatePaginationBullet();
+  const bulletPoints = document.getElementsByClassName("pagination-bullet");
+  bulletPoints[currentImg].classList.add("pagination-bullet--active");
 };
 
 nextBtn.addEventListener("click", slideChanger("right", images));
