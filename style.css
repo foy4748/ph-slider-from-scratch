@@ -1,64 +1,97 @@
 #root {
-	display: grid;
-	grid-template-columns: repeat(12, 1fr);
-	overflow-x: hidden;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  overflow-x: hidden;
 }
 
 .col {
-	grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 
 .navigate-next,
 .navigate-prev {
-	left: 0;
-	font-weight: 700;
-	top: -3px;
-	position: absolute;
-	z-index: 2;
-	color: green;
-	background-color: white;
-	padding: 25px;
-	border-radius: 55%;
+  left: 0;
+  font-weight: 700;
+  top: -3px;
+  position: absolute;
+  z-index: 2;
+  color: green;
+  background-color: white;
+  padding: 25px;
+  border-radius: 55%;
 }
 
 .navigate-prev {
-	left: unset;
-	right: 0;
+  left: unset;
+  right: 0;
+}
+
+.pagination {
+  position: relative;
+  top: -30px;
+
+  display: flex;
+  justify-content: center;
+
+  gap: 10px;
+}
+
+.pagination-bullet {
+  cursor: pointer;
+  background-color: cyan;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
 }
 
 /* Animation Section */
 
 .animation-from-left {
-	animation: imageLoaded-from-left 0.7s linear 0s alternate;
+  animation: imageLoaded-from-left 0.7s linear 0s alternate;
 }
 
 .animation-from-right {
-	animation: imageLoaded-from-right 0.7s linear 0s alternate;
+  animation: imageLoaded-from-right 0.7s linear 0s alternate;
 }
 
+.animation-from-top {
+  animation: imageLoaded-from-top 0.7s linear 0s alternate;
+}
 
 @keyframes imageLoaded-from-left {
-	0% {
-		opacity: 0.5;
-		transform: translateX(-50px);
-	}
+  0% {
+    opacity: 0.5;
+    transform: translateX(-50px);
+  }
 
-	100% {
-		transform: translateX(0);
-		opacity: 1;
-	}
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 @keyframes imageLoaded-from-right {
-	0% {
-		opacity: 0.5;
-		transform: translateX(50px);
-	}
+  0% {
+    opacity: 0.5;
+    transform: translateX(50px);
+  }
 
-	100% {
-		transform: translateX(0);
-		opacity: 1;
-	}
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes imageLoaded-from-top {
+  0% {
+    opacity: 0.5;
+    transform: translateY(-50px);
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 /* ======== End of Animation Section ========= */
