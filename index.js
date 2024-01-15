@@ -51,11 +51,11 @@ const slideChanger = (direction, images) => () => {
   // Updating  State
   // currentImg;
   switch (direction) {
-    case "left":
+    case "next":
       currentImg = (currentImg + 1) % size;
       imgElm.classList.add("animation-from-right");
       break;
-    case "right":
+    case "prev":
       currentImg = (currentImg - 1 + size) % size;
       imgElm.classList.add("animation-from-left");
       break;
@@ -127,8 +127,8 @@ window.onload = () => {
   bulletPoints[currentImg].classList.add("pagination-bullet--active");
 };
 
-nextBtn.addEventListener("click", slideChanger("right", images));
-prevBtn.addEventListener("click", slideChanger("left", images));
+nextBtn.addEventListener("click", slideChanger("next", images));
+prevBtn.addEventListener("click", slideChanger("prev", images));
 
 // Thanks to this blog
 // https://dev.to/ranewallin/this-simple-math-hack-lets-you-create-an-image-carousel-without-any-if-statements-5chj

@@ -10,7 +10,6 @@
 
 .navigate-next,
 .navigate-prev {
-  left: 0;
   font-weight: 700;
   top: -3px;
   position: absolute;
@@ -21,9 +20,12 @@
   border-radius: 55%;
 }
 
-.navigate-prev {
-  left: unset;
+.navigate-next {
   right: 0;
+}
+
+.navigate-prev {
+  left: 0;
 }
 
 .pagination {
