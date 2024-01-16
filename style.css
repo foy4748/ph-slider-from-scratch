@@ -8,30 +8,47 @@
   grid-column: 1 / -1;
 }
 
+img.col {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+}
+
+.main-div {
+  position: relative;
+}
+
 .navigate-next,
 .navigate-prev {
   font-weight: 700;
-  top: -3px;
+
   position: absolute;
+
+  top: 50%;
+  transform: translateY(-50%);
+
   z-index: 2;
-  color: green;
-  background-color: white;
+  color: #fff;
+  background-color: #ffffff80;
+  outline: 1px solid #fff;
   padding: 25px;
   border-radius: 55%;
 }
 
 .navigate-next {
-  right: 0;
+  right: -25px;
 }
 
 .navigate-prev {
-  left: 0;
+  left: -25px;
 }
 
 .pagination {
-  position: relative;
-  top: -30px;
+  width: 100%;
+  position: absolute;
+  bottom: 30px;
 
+  z-index: 2;
   display: flex;
   justify-content: center;
 

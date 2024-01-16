@@ -1,17 +1,15 @@
 const images = [
-  "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
-  "https://cdn.pixabay.com/photo/2015/06/19/21/24/avenue-815297_640.jpg",
-  "https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_640.jpg",
-  "https://cdn.pixabay.com/photo/2015/11/16/16/28/bird-1045954_640.jpg",
-  "https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_640.jpg",
+    "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg",
+    "https://cdn.pixabay.com/photo/2015/06/19/21/24/avenue-815297_640.jpg",
+    "https://cdn.pixabay.com/photo/2016/05/05/02/37/sunset-1373171_640.jpg",
+    "https://cdn.pixabay.com/photo/2015/11/16/16/28/bird-1045954_640.jpg",
+    "https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_640.jpg",
 ];
 
-// State Management
-let currentImg = -1;
+//// Main Div
+let mainDiv = document.getElementsByClassName("main-div")[0];
 
-// Grabbing Elements
-
-//// Main Container
+//// Main Image Container
 let rootDiv = document.getElementById("root");
 
 //// Navigation Buttons
@@ -21,114 +19,105 @@ let prevBtn = document.getElementsByClassName("navigate-prev")[0];
 //// Pagination Bullet Container
 let paginationDiv = document.getElementsByClassName("pagination")[0];
 
-// Event Handler Functions
+// CurrentImage Index 
+let currentImgIdx = -1;
 
-// Changing Slides
-const slideChanger = (direction, images) => () => {
-  // Removing previous active bullet point ===============
-  // Grabbing Displaying bullet points
-  const bulletPoints = document.getElementsByClassName("pagination-bullet");
+const renderImg = (imgIdx, optionalClass = "animation-from-top") => {
+    // Deleting any previous image which was displaying / rendering
+    rootDiv.innerHTML = "";
 
-  // Removing existing bulletPoints
-  currentImg >= 0 &&
-    bulletPoints[currentImg].classList.remove("pagination-bullet--active");
-  //=============================
+    // Creating Img Elemenet
+    const imgElement = document.createElement("img");
+    imgElement.src = images[imgIdx];
+    imgElement.classList.add("col");
+    imgElement.classList.add(optionalClass);
 
-  const size = images.length;
-
-  // First making sure the root Div is empty
-  rootDiv.innerHTML = "";
-
-  // Creating Img Element
-  const imgElm = document.createElement("img");
-
-  // Styling a Bit
-  imgElm.style["width"] = "100%";
-  imgElm.style["height"] = "500px";
-  imgElm.style["objectFit"] = "cover";
-  imgElm.classList.add("col");
-
-  // Updating  State
-  // currentImg;
-  switch (direction) {
-    case "next":
-      currentImg = (currentImg + 1) % size;
-      imgElm.classList.add("animation-from-right");
-      break;
-    case "prev":
-      currentImg = (currentImg - 1 + size) % size;
-      imgElm.classList.add("animation-from-left");
-      break;
-    default:
-      break;
-  }
-
-  // Populating DOM / Rendering
-  imgElm.src = images[currentImg];
-  rootDiv.append(imgElm);
-
-  // Marking active bullet point
-  currentImg >= 0 &&
-    bulletPoints[currentImg]?.classList.add("pagination-bullet--active");
-};
-
-// Pagination Bullet Part ==============================
-
-// Changing image
-// according to bullet point
-function bulletPointListener(imgNumber) {
-  // Removing previous active bullet point ===============
-  // Grabbing Displaying bullet points
-  const bulletPoints = document.getElementsByClassName("pagination-bullet");
-
-  // Removing existing bulletPoints
-  bulletPoints[currentImg].classList.remove("pagination-bullet--active");
-  //=============================
-
-  // Updating state
-  currentImg = imgNumber;
-
-  // First making sure the root Div is empty
-  rootDiv.innerHTML = "";
-
-  // Creating Img Element
-  const imgElm = document.createElement("img");
-
-  // Styling a Bit
-  imgElm.style["width"] = "100%";
-  imgElm.style["height"] = "500px";
-  imgElm.style["objectFit"] = "cover";
-  imgElm.classList.add("col");
-
-  imgElm.classList.add("animation-from-top");
-
-  // Populating DOM / Rendering
-  imgElm.src = images[currentImg];
-  rootDiv.append(imgElm);
-
-  // Marking active bullet point
-  bulletPoints[currentImg].classList.add("pagination-bullet--active");
+    // Appending created new image to root div
+    rootDiv.append(imgElement);
 }
 
-const generatePaginationBullet = () => {
-  paginationDiv.innerHTML = "";
-  for (let i = 0; i < images.length; i++) {
-    paginationDiv.innerHTML += `<div class="pagination-bullet" onclick="bulletPointListener(${i})"></div>`;
-  }
-};
+const renderActiveBullet = (prevActive) => (nextActive) => {
+    const bullets = document.getElementsByClassName("pagination-bullet");
+    /*
+    for (let bullet of bullets) {
+        bullet.classList.remove("pagination-bullet--active")
+    }
+    */
 
-// Event Listeners =============================================
+    bullets[prevActive]?.classList.remove("pagination-bullet--active");
+    bullets[nextActive]?.classList.add("pagination-bullet--active");
+}
+
+const nextBtnClick = () => {
+
+
+    const prevRemoved = renderActiveBullet(currentImgIdx)
+    // Updating CurrentImg / State
+    let temp = currentImgIdx + 1
+    currentImgIdx = temp == images.length ? 0 : temp;
+
+    renderImg(currentImgIdx, "animation-from-right");
+    //renderActiveBullet(currentImg);
+    prevRemoved(currentImgIdx);
+
+}
+
+const prevBtnClick = () => {
+
+    const prevRemoved = renderActiveBullet(currentImgIdx)
+    // Updating CurrentImg / State
+    let temp = currentImgIdx - 1;
+    currentImgIdx = temp == -1 ? 4 : temp;
+
+    renderImg(currentImgIdx, "animation-from-left");
+    prevRemoved(currentImgIdx);
+}
+
+const goToSlide = (slideIdx) => {
+    const prevRemoved = renderActiveBullet(currentImgIdx)
+    currentImgIdx = slideIdx;
+    renderImg(currentImgIdx);
+    //renderActiveBullet(currentImg);
+    prevRemoved(currentImgIdx);
+}
+const populatePaginationBullet = () => {
+
+    for (let i = 0; i < images.length; i++) {
+        paginationDiv.innerHTML += `
+      <div class="pagination-bullet" onclick="goToSlide(${i})"></div>
+        `;
+    }
+}
+
+let autoSlideTimer;
+
+const autoSlide = () => {
+    autoSlideTimer = setInterval(() => {
+        nextBtn.click();
+    }, 1000)
+}
+
+
+
+// Introducing Event Listeners =========
+nextBtn.addEventListener("click", nextBtnClick);
+prevBtn.addEventListener("click", prevBtnClick);
+
+mainDiv.addEventListener("mouseenter", () => {
+    clearInterval(autoSlideTimer);
+})
+
+mainDiv.addEventListener("mouseleave", () => {
+    autoSlide();
+})
 
 window.onload = () => {
-  prevBtn.click();
-  console.log("currentImg", currentImg);
-  generatePaginationBullet();
-  const bulletPoints = document.getElementsByClassName("pagination-bullet");
-  bulletPoints[currentImg].classList.add("pagination-bullet--active");
-};
 
-nextBtn.addEventListener("click", slideChanger("next", images));
-prevBtn.addEventListener("click", slideChanger("prev", images));
+    const prevRemoved = renderActiveBullet(currentImgIdx);
+    nextBtn.click();
 
-// Thanks to this blog
-// https://dev.to/ranewallin/this-simple-math-hack-lets-you-create-an-image-carousel-without-any-if-statements-5chj
+    populatePaginationBullet();
+    prevRemoved(currentImgIdx);
+    autoSlide();
+
+}
