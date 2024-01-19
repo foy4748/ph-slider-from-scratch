@@ -6,118 +6,108 @@ const images = [
     "https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_640.jpg",
 ];
 
-//// Main Div
-let mainDiv = document.getElementsByClassName("main-div")[0];
-
-//// Main Image Container
-let rootDiv = document.getElementById("root");
-
-//// Navigation Buttons
-let nextBtn = document.getElementsByClassName("navigate-next")[0];
-let prevBtn = document.getElementsByClassName("navigate-prev")[0];
-
-//// Pagination Bullet Container
-let paginationDiv = document.getElementsByClassName("pagination")[0];
-
-// CurrentImage Index 
+// State Variable
 let currentImgIdx = -1;
 
-const renderImg = (imgIdx, optionalClass = "animation-from-top") => {
-    // Deleting any previous image which was displaying / rendering
-    rootDiv.innerHTML = "";
+const rootDiv = document.getElementById("root");
 
-    // Creating Img Elemenet
+const nextBtn = document.getElementsByClassName("navigate-next")[0];
+const prevBtn = document.getElementsByClassName("navigate-prev")[0];
+
+const paginationDiv = document.getElementsByClassName("pagination")[0];
+const mainDiv = document.getElementsByClassName("main-div")[0];
+
+
+function renderSliderImage(imgIdx, customClass) {
     const imgElement = document.createElement("img");
     imgElement.src = images[imgIdx];
     imgElement.classList.add("col");
-    imgElement.classList.add(optionalClass);
-
-    // Appending created new image to root div
+    imgElement.classList.add(customClass);
+    rootDiv.innerHTML = "";
     rootDiv.append(imgElement);
 }
 
-const renderActiveBullet = (prevActive) => (nextActive) => {
+const handleBulletActive = (previousIdx) => (updatedIdx) => {
     const bullets = document.getElementsByClassName("pagination-bullet");
-    /*
-    for (let bullet of bullets) {
-        bullet.classList.remove("pagination-bullet--active")
+
+    bullets[previousIdx]?.classList.remove("pagination-bullet--active");
+
+    bullets[updatedIdx]?.classList.add("pagination-bullet--active");
+
+}
+
+nextBtn.addEventListener("click", () => {
+
+    const previousHandled = handleBulletActive(currentImgIdx);
+
+    let forChecking = currentImgIdx + 1;
+    if (forChecking == images.length) {
+        currentImgIdx = 0;
+    } else {
+        currentImgIdx = currentImgIdx + 1;
+
     }
-    */
 
-    bullets[prevActive]?.classList.remove("pagination-bullet--active");
-    bullets[nextActive]?.classList.add("pagination-bullet--active");
+    previousHandled(currentImgIdx);
+
+    renderSliderImage(currentImgIdx, "animation-from-right");
+
+})
+
+prevBtn.addEventListener("click", () => {
+
+
+    const previousHandled = handleBulletActive(currentImgIdx);
+    let forChecking = currentImgIdx - 1
+    if (forChecking == -1) {
+        currentImgIdx = images.length - 1;
+    } else {
+        currentImgIdx = currentImgIdx - 1;
+
+    }
+
+    previousHandled(currentImgIdx);
+
+    renderSliderImage(currentImgIdx, "animation-from-left");
+})
+
+
+function paginationClick(index) {
+    const previousHandled = handleBulletActive(currentImgIdx);
+
+    currentImgIdx = index;
+
+    previousHandled(currentImgIdx);
+
+    renderSliderImage(currentImgIdx, "animation-from-top");
 }
 
-const nextBtnClick = () => {
-
-
-    const prevRemoved = renderActiveBullet(currentImgIdx)
-    // Updating CurrentImg / State
-    let temp = currentImgIdx + 1
-    currentImgIdx = temp == images.length ? 0 : temp;
-
-    renderImg(currentImgIdx, "animation-from-right");
-    //renderActiveBullet(currentImg);
-    prevRemoved(currentImgIdx);
-
-}
-
-const prevBtnClick = () => {
-
-    const prevRemoved = renderActiveBullet(currentImgIdx)
-    // Updating CurrentImg / State
-    let temp = currentImgIdx - 1;
-    currentImgIdx = temp == -1 ? 4 : temp;
-
-    renderImg(currentImgIdx, "animation-from-left");
-    prevRemoved(currentImgIdx);
-}
-
-const goToSlide = (slideIdx) => {
-    const prevRemoved = renderActiveBullet(currentImgIdx)
-    currentImgIdx = slideIdx;
-    renderImg(currentImgIdx);
-    //renderActiveBullet(currentImg);
-    prevRemoved(currentImgIdx);
-}
-const populatePaginationBullet = () => {
-
+function generatePaginationBullet() {
+    paginationDiv.innerHTML = "";
     for (let i = 0; i < images.length; i++) {
-        paginationDiv.innerHTML += `
-      <div class="pagination-bullet" onclick="goToSlide(${i})"></div>
-        `;
+        const bulletElm = `<div onclick="paginationClick(${i})" class="pagination-bullet"></div>`
+        paginationDiv.innerHTML += bulletElm
     }
 }
 
-let autoSlideTimer;
+let timerStorage;
 
-const autoSlide = () => {
-    autoSlideTimer = setInterval(() => {
+function autoSlide() {
+
+    timerStorage = setInterval(() => {
         nextBtn.click();
-    }, 1000)
+    }, 1000);
+
 }
-
-
-
-// Introducing Event Listeners =========
-nextBtn.addEventListener("click", nextBtnClick);
-prevBtn.addEventListener("click", prevBtnClick);
 
 mainDiv.addEventListener("mouseenter", () => {
-    clearInterval(autoSlideTimer);
+    clearInterval(timerStorage);
 })
 
 mainDiv.addEventListener("mouseleave", () => {
     autoSlide();
 })
 
-window.onload = () => {
-
-    const prevRemoved = renderActiveBullet(currentImgIdx);
-    nextBtn.click();
-
-    populatePaginationBullet();
-    prevRemoved(currentImgIdx);
-    autoSlide();
-
-}
+generatePaginationBullet();
+nextBtn.click();
+autoSlide();
